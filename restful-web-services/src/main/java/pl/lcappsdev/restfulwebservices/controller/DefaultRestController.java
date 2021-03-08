@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import pl.lcappsdev.restfulwebservices.dto.MessageContainer;
 
@@ -45,5 +46,11 @@ public class DefaultRestController {
 	public String getHelloI18NBasedByContextLocale() {
 		return messageSource.getMessage("good.morning.message", null, LocaleContextHolder.getLocale());
 	}
+	
+	@GetMapping(path = "/swagger")
+	public RedirectView redirectoToSwagger() {
+		return new RedirectView("swagger-ui/index.html");
+	}
+	
 	
 }
