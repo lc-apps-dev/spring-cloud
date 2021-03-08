@@ -21,7 +21,7 @@ public class DefaultRestController {
 	@Autowired
 	private MessageSource messageSource;
 
-	@RequestMapping(method = RequestMethod.GET, path = "/")
+	@RequestMapping(method = RequestMethod.GET, path = "/hello")
 	public String getHelloMessage() {
 		return "Hello from " + this.getClass().getName();
 	}
