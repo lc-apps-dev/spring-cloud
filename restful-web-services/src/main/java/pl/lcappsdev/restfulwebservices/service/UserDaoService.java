@@ -15,9 +15,9 @@ public class UserDaoService {
 	private static Map<Integer, User> users = new HashMap<>();
 	
 	static {
-		users.put(1, new User(1, "Adam", LocalDate.now()));
-		users.put(2, new User(2, "Eve", LocalDate.now()));
-		users.put(3, new User(3, "Jack", LocalDate.now()));
+		users.put(1, new User(1, "Adam", LocalDate.now(), null));
+		users.put(2, new User(2, "Eve", LocalDate.now(), null));
+		users.put(3, new User(3, "Jack", LocalDate.now(), null));
 	}
 	
 	public List<User> findAll() {

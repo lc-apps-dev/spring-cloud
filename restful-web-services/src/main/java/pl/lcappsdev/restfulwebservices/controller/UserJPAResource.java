@@ -23,8 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import pl.lcappsdev.restfulwebservices.exception.UserNotFoundException;
+import pl.lcappsdev.restfulwebservices.model.Post;
 import pl.lcappsdev.restfulwebservices.model.User;
-import pl.lcappsdev.restfulwebservices.service.UserDaoService;
+import pl.lcappsdev.restfulwebservices.service.PostRepository;
 import pl.lcappsdev.restfulwebservices.service.UserRepository;
 
 @RestController
@@ -36,6 +37,10 @@ public class UserJPAResource {
 	
 	@Autowired
 	UserRepository userRepository;
+	
+	@Autowired
+	PostRepository postRepository;
+	
 	
 	@GetMapping(path = "/users")
 	public List<User> retrieveAllUsers() {
@@ -77,6 +82,44 @@ public class UserJPAResource {
 	public void deleteUser(@PathVariable int id) {
 		
 		userRepository.deleteById(id);
+	}
+	
+	
+	
+	// posts part
+	
+	private User getUser(Integer id) {
+		
+		Optional<User> user = userRepository.findById(id);
+		
+		if(!user.isPresent())
+			throw new UserNotFoundException("id=" + id);
+		
+		return user.get();
+	}
+	
+	@GetMapping(path = "/users/{id}/posts")
+	public List<Post> retrieveUserPosts(@PathVariable int id) {
+		
+		return getUser(id).getPosts();
+	}
+	
+	@PostMapping(path = "/users/{id}/posts")
+	public ResponseEntity<Object> createUserPost(@PathVariable int id,
+			@Valid @RequestBody Post post) {
+		
+		User user = getUser(id);
+		
+		post.setUser(user);
+		
+		postRepository.save(post);
+		
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}")
+				.buildAndExpand(post.getId())
+				.toUri();
+			
+		return ResponseEntity.created(location).build();
 	}
 	
 }
