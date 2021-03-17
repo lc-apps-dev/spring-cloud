@@ -32,6 +32,8 @@ public class CurrencyExchangeController {
 		if(exchange==null)
 			throw new RuntimeException("Unable to find a data for " + from + " to " + to);
 		
+		exchange.setEnvironment(env.getProperty(PORT_PROPERTY));
+		
 		return exchange;
 	}
 
